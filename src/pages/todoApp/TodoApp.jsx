@@ -9,11 +9,15 @@ import {
   doc,
   setDoc,
 } from "firebase/firestore/lite";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth-context";
+
 import "./todoApp.style.css";
 
 function TodoApp() {
   const [todo, setTodo] = useState("");
   const [todoList, setTodoList] = useState([]);
+  const { currentUser, signOut } = useContext(AuthContext);
 
   async function getTodos(db) {
     try {
@@ -83,6 +87,9 @@ function TodoApp() {
   return (
     <div className="App">
       <h1>Todo App</h1>
+      <p>Welcome back, {currentUser?.email}</p>
+      <button onClick={signOut}>Sign out </button>
+      <br></br>
       <input name="todo" onChange={onChangeHandler} value={todo} />
       <button onClick={addTodo}>Add</button>
       <div>

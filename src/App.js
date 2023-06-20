@@ -2,11 +2,10 @@ import { useContext, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { AuthContext } from "./context/auth-context";
 import RequireAuth from "./components/require-auth/RequireAuth";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
+import SignUp from "./pages/signup/SignUp";
+import SignIn from "./pages/signin/SignIn";
 import TodoApp from "./pages/todoApp/TodoApp";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -18,22 +17,24 @@ function App() {
   // Check if currentUser exists on initial render
   useEffect(() => {
     if (currentUser) {
-      navigate("/todoapp");
+      navigate("/dashboard");
     }
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   return (
     <Routes>
       <Route index element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route
-        path="todoapp"
+        path="dashboard/"
         element={
           <RequireAuth>
-            <TodoApp />
+            <Dashboard />
           </RequireAuth>
         }
-      />
+      >
+        <Route path="todoapp" element={<TodoApp />} />
+      </Route>
     </Routes>
   );
 }

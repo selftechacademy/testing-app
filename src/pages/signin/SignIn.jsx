@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
-import { signInWithEmail } from "../firebase-config";
+import { signInWithEmail } from "../../firebase-config";
 
 function Copyright(props) {
   return (
