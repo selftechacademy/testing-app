@@ -1,14 +1,17 @@
-import * as React from 'react';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import * as React from "react";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import ListSubheader from "@mui/material/ListSubheader";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import StyleIcon from "@mui/icons-material/Style";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import DesignServicesIcon from "@mui/icons-material/DesignServices";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
@@ -16,31 +19,41 @@ export const mainListItems = (
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <Link to="todoapp" style={{ textDecoration: "none" }}>
+        <ListItemText primary="Dashboard" />
+      </Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <PlayCircleOutlineIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <Link to="todoapp" style={{ textDecoration: "none" }}>
+        <ListItemText primary="Take exam" />
+      </Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <PeopleIcon />
+        <StyleIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <Link to="flashcards" style={{ textDecoration: "none" }}>
+        <ListItemText primary="Flashcards" />
+      </Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
+      <Link to="flashcards" style={{ textDecoration: "none" }}>
+        <ListItemText primary="Personal Report" />
+      </Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <LayersIcon />
+        <EmojiEventsIcon />
       </ListItemIcon>
-      <ListItemText primary="Integrations" />
+      <Link to="flashcards" style={{ textDecoration: "none" }}>
+        <ListItemText primary="Standings" />
+      </Link>
     </ListItemButton>
   </React.Fragment>
 );
@@ -48,25 +61,25 @@ export const mainListItems = (
 export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
-      Saved reports
+      Admin
     </ListSubheader>
     <ListItemButton>
       <ListItemIcon>
-        <AssignmentIcon />
+        <AddBoxIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Create Questions" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <AssignmentIcon />
+        <DesignServicesIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
+      <ListItemText primary="Manage Questions" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <AssignmentIcon />
+        <GroupAddIcon />
       </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      <ListItemText primary="Manage Users" />
     </ListItemButton>
   </React.Fragment>
 );

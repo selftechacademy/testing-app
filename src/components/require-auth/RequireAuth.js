@@ -8,7 +8,7 @@ function RequireAuth({ children }) {
 
   if (!currentUser) {
     // Redirect the user to the home page.
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
   return children;

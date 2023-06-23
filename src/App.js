@@ -6,26 +6,24 @@ import SignUp from "./pages/signup/SignUp";
 import SignIn from "./pages/signin/SignIn";
 import TodoApp from "./pages/todoApp/TodoApp";
 import Dashboard from "./pages/dashboard/Dashboard";
+import TestPage from "./pages/testPage/TestPage";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // NOTE: console log for testing purposes
-  console.log("User:", currentUser);
-
   // Check if currentUser exists on initial render
   useEffect(() => {
     if (currentUser) {
-      navigate("/dashboard");
+      navigate("/");
     }
-  }, [currentUser, navigate]);
+  }, [currentUser]);
 
   return (
     <Routes>
-      <Route index element={<SignIn />} />
+      <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route
+      {/* <Route
         path="dashboard/"
         element={
           <RequireAuth>
@@ -34,6 +32,33 @@ function App() {
         }
       >
         <Route path="todoapp" element={<TodoApp />} />
+      </Route> */}
+      <Route
+        index
+        element={
+          <RequireAuth>
+            <Dashboard />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/"
+        element={
+          <RequireAuth>
+            <Dashboard />
+          </RequireAuth>
+        }
+      >
+        <Route
+          path="todoapp"
+          element={
+            <RequireAuth>
+              <TodoApp />
+            </RequireAuth>
+          }
+        />{" "}
+        {/*A nested route!*/}
+        <Route path="testpage" element={<TestPage />} />
       </Route>
     </Routes>
   );
