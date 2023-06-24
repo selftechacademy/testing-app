@@ -76,9 +76,6 @@ const Drawer = styled(MuiDrawer, {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(0),
-    },
     boxSizing: "border-box",
     ...(!open && {
       overflowX: "hidden",

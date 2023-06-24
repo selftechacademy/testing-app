@@ -9,8 +9,8 @@
 }
 
 .swiper {
-  width: 700px;
-  height: 700px;
+  width: 50vw;
+  height: 50vw;
   position: relative;
 }
 
@@ -20,8 +20,8 @@
   border-radius: 15px;
   background-position: center;
   background-size: cover;
-  width: 700px;
-  height: 700px;
+  width: 50vw;
+  height: 300px;
 }
 
 .swiper-wrapper {
@@ -99,7 +99,6 @@
 @media screen and (max-width: 750px) {
   .swiper {
     width: 350px;
-    background-color: aqua;
   }
 
   .swiper-slide {
