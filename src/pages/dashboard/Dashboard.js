@@ -25,6 +25,7 @@ import { Button } from "@mui/material";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { Outlet } from "react-router-dom";
+import "./dashboard.style.css";
 
 function Copyright(props) {
   return (
@@ -75,6 +76,9 @@ const Drawer = styled(MuiDrawer, {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(0),
+    },
     boxSizing: "border-box",
     ...(!open && {
       overflowX: "hidden",
@@ -84,7 +88,7 @@ const Drawer = styled(MuiDrawer, {
       }),
       width: theme.spacing(7),
       [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
+        width: theme.spacing(0),
       },
     }),
   },
@@ -161,7 +165,9 @@ export default function Dashboard() {
             {secondaryListItems}
           </List>
         </Drawer>
-        <Outlet />
+        <div className="dashboard-box">
+          <Outlet />
+        </div>
       </Box>
     </ThemeProvider>
   );

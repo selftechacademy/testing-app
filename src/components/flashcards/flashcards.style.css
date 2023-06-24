@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+.flash-cards__app {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.swiper {
+  width: 700px;
+  height: 700px;
+  position: relative;
+}
+
+.swiper-slide {
+  font-size: 1.3rem;
+  border: 1px rgb(92, 92, 92) solid;
+  border-radius: 15px;
+  background-position: center;
+  background-size: cover;
+  width: 700px;
+  height: 700px;
+}
+
+.swiper-wrapper {
+  height: fit-content;
+}
+
+.flash-cards__question {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  width: 95%;
+  height: 95%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.flash-cards__answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  width: 95%;
+  height: 95%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.flash-cards__categories__checkbox {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flesh-cards__btns {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px auto;
+}
+
+.flash-cards__inotknow-btn {
+  display: block;
+  width: 150px;
+  height: 2rem;
+}
+
+.flash-cards__iknow-btn {
+  display: block;
+  width: 150px;
+  height: 2rem;
+}
+
+.flash-cards__score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 3rem;
+}
+
+.flash-cards__start {
+  text-align: center;
+  line-height: 3rem;
+}
+
+.flash-cards__end {
+  text-align: center;
+  line-height: 3rem;
+}
+
+@media screen and (max-width: 750px) {
+  .swiper {
+    width: 350px;
+    background-color: aqua;
+  }
+
+  .swiper-slide {
+    font-size: 1rem;
+  }
+}

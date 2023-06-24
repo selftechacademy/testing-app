@@ -27,7 +27,7 @@ export const mainListItems = (
       <ListItemIcon>
         <PlayCircleOutlineIcon />
       </ListItemIcon>
-      <Link to="todoapp" style={{ textDecoration: "none" }}>
+      <Link to="quiz" style={{ textDecoration: "none" }}>
         <ListItemText primary="Take exam" />
       </Link>
     </ListItemButton>
@@ -67,7 +67,9 @@ export const secondaryListItems = (
       <ListItemIcon>
         <AddBoxIcon />
       </ListItemIcon>
-      <ListItemText primary="Create Questions" />
+      <Link to="createquestions" style={{ textDecoration: "none" }}>
+        <ListItemText primary="Create Questions" />
+      </Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>

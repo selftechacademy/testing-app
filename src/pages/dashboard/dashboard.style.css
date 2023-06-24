@@ -1,0 +1,9 @@
+.dashboard-box {
+  margin-top: 70px !important;
+  text-align: center;
+  flex: 2;
+}
+
+/* .MuiDrawer-paperAnchorDockedLeft {
+  display: none !important;
+} */

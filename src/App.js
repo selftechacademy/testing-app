@@ -7,6 +7,9 @@ import SignIn from "./pages/signin/SignIn";
 import TodoApp from "./pages/todoApp/TodoApp";
 import Dashboard from "./pages/dashboard/Dashboard";
 import TestPage from "./pages/testPage/TestPage";
+import FlashCards from "./components/flashcards/Flashcards";
+import FieldDropDown from "./components/fieldDropdown/FieldDropdown";
+import QuestionsMain from "./components/questionsMain/QuestionsMain";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -23,16 +26,6 @@ function App() {
     <Routes>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
-      {/* <Route
-        path="dashboard/"
-        element={
-          <RequireAuth>
-            <Dashboard />
-          </RequireAuth>
-        }
-      >
-        <Route path="todoapp" element={<TodoApp />} />
-      </Route> */}
       <Route
         index
         element={
@@ -50,14 +43,29 @@ function App() {
         }
       >
         <Route
-          path="todoapp"
+          path="flashcards"
           element={
             <RequireAuth>
-              <TodoApp />
+              <FlashCards />
             </RequireAuth>
           }
-        />{" "}
-        {/*A nested route!*/}
+        />
+        <Route
+          path="quiz"
+          element={
+            <RequireAuth>
+              <FieldDropDown />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="createquestions"
+          element={
+            <RequireAuth>
+              <QuestionsMain />
+            </RequireAuth>
+          }
+        />
         <Route path="testpage" element={<TestPage />} />
       </Route>
     </Routes>
