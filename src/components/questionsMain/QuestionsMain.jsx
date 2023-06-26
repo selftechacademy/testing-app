@@ -7,7 +7,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import TrueFalse from "../trueFalse/TrueFalse";
 
-import FlashCard from "../flashCard_2/FlashCard";
+import FlashCard from "../flashCard_create/FlashCard";
 import FourChoices from "../fourChoices/FourChoices";
 
 function QuestionsMain() {

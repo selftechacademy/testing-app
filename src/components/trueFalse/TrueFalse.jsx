@@ -9,6 +9,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import { TextareaAutosize } from "@mui/material";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth-context";
 import { db } from "../../firebase-config";
 import { collection, addDoc } from "firebase/firestore/lite";
 
@@ -17,6 +19,7 @@ function TrueFalse() {
   const [typeValue, setTypeValue] = useState("css");
   const [levelValue, setLevelValue] = useState("easy");
   const [booleanValue, setBooleanValue] = useState("true");
+  const { currentUser } = useContext(AuthContext);
 
   const handleChangeType = (event) => {
     setTypeValue(event.target.value);
@@ -36,20 +39,24 @@ function TrueFalse() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
-    console.log(Object.fromEntries(formData));
     try {
       const questionsCollection = collection(db, "questions");
       await addDoc(questionsCollection, {
+        author: currentUser?.email,
         ...data,
         options: ["true", "false"],
       });
+      //resetting the inputs
+      setText("");
+      setTypeValue("css");
+      setLevelValue("easy");
+      setBooleanValue("true");
     } catch (err) {
-      console.log("err:", err);
+      enqueueSnackbar("Sth went wrong. Please try again later", {
+        variant: "error",
+      });
+      console.log("error:", err);
     }
-    setText("");
-    setTypeValue("css");
-    setLevelValue("easy");
-    setBooleanValue("true");
   };
 
   return (

@@ -59,9 +59,9 @@ export default function Quizes() {
       <FormControl sx={{ m: 3 }} error={error} variant="standard">
         {!isFinished ? (
           <>
-            <h3 className="js-quiz__h3">
-              {index} out of {questions.length}
-            </h3>
+            <h5 className="js-quiz__h3">
+              Question {index} out of {questions.length}
+            </h5>
             <h2 className="js-quiz__question">{question}</h2>
 
             <RadioGroup

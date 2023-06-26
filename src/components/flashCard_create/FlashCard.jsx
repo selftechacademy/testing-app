@@ -8,6 +8,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth-context";
+import { db } from "../../firebase-config";
+import { collection, addDoc } from "firebase/firestore/lite";
 import "./flashCard.style.css";
 
 function FlashCard() {
@@ -15,6 +19,8 @@ function FlashCard() {
   const [typeValue, setTypeValue] = useState("css");
   const [levelValue, setLevelValue] = useState("easy");
   const [answer, setAnswer] = useState("");
+
+  const { currentUser } = useContext(AuthContext);
 
   const handleChangeType = (event) => {
     setTypeValue(event.target.value);
@@ -31,11 +37,25 @@ function FlashCard() {
     setAnswer(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
+    try {
+      const questionsCollection = collection(db, "flashcards");
+      await addDoc(questionsCollection, {
+        author: currentUser?.email,
+        ...data,
+      });
+      //resetting the inputs
+      setAnswer("");
+      setQuestion("");
+    } catch (err) {
+      enqueueSnackbar("Sth went wrong. Please try again later", {
+        variant: "error",
+      });
+      console.log("error:", err);
+    }
   };
 
   return (

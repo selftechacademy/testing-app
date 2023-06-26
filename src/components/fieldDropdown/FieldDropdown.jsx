@@ -1,6 +1,5 @@
 import * as React from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
@@ -49,59 +48,62 @@ export default function FieldDropDown() {
   return (
     <div className="dropdown-app">
       {!isSubmited ? (
-        <FormControl
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "row",
-          }}
-          className="dropdown"
-        >
-          <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
-          <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput label="Tag" />}
-            renderValue={(selected) => selected.join(", ")}
-            MenuProps={MenuProps}
+        <>
+          <h3>Select Category and test size</h3>
+          <FormControl
             sx={{
-              width: "350px",
-              marginRight: "15px",
-              backgroundColor: "white",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
             }}
-            className="dropdown__selectbox dropdown__selectbox--category"
+            className="dropdown"
           >
-            {names.map((name) => (
-              <MenuItem key={name} value={name}>
-                <Checkbox checked={personName.indexOf(name) > -1} />
-                <ListItemText primary={name} />
-              </MenuItem>
-            ))}
-          </Select>
-          <Select
-            sx={{
-              width: "100px",
-              marginRight: "15px",
-              backgroundColor: "white",
-            }}
-            className="dropdown__selectbox"
-          >
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={20}>20</MenuItem>
-            <MenuItem value={30}>30</MenuItem>
-          </Select>
-          <Button
-            variant="contained"
-            sx={{ width: "150px", marginRight: "15px" }}
-            onClick={onClickHandler}
-            className="dropdown__btn"
-          >
-            Start quiz{" "}
-          </Button>
-        </FormControl>
+            {/* <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel> */}
+            <Select
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              multiple
+              value={personName}
+              onChange={handleChange}
+              input={<OutlinedInput label="Tag" />}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={MenuProps}
+              sx={{
+                width: "350px",
+                marginRight: "15px",
+                backgroundColor: "white",
+              }}
+              className="dropdown__selectbox dropdown__selectbox--category"
+            >
+              {names.map((name) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox checked={personName.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+            <Select
+              sx={{
+                width: "100px",
+                marginRight: "15px",
+                backgroundColor: "white",
+              }}
+              className="dropdown__selectbox"
+            >
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={20}>20</MenuItem>
+              <MenuItem value={30}>30</MenuItem>
+            </Select>
+            <Button
+              variant="contained"
+              sx={{ width: "150px", marginRight: "15px" }}
+              onClick={onClickHandler}
+              className="dropdown__btn"
+            >
+              Start quiz{" "}
+            </Button>
+          </FormControl>
+        </>
       ) : (
         <Quizes />
       )}

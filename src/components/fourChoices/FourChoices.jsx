@@ -8,6 +8,10 @@ import Radio from "@mui/material/Radio";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth-context";
+import { db } from "../../firebase-config";
+import { collection, addDoc } from "firebase/firestore/lite";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 
 function FourChoices() {
@@ -19,6 +23,8 @@ function FourChoices() {
   const [answerTwo, setAnswerTwo] = useState("");
   const [answerThree, setAnswerThree] = useState("");
   const [answerFour, setAnswerFour] = useState("");
+
+  const { currentUser } = useContext(AuthContext);
 
   const handleChangeType = (event) => {
     setTypeValue(event.target.value);
@@ -43,11 +49,31 @@ function FourChoices() {
   const handleChangeAnswerFour = (e) => {
     setAnswerFour(e.target.value);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
+    try {
+      const questionsCollection = collection(db, "questions");
+      await addDoc(questionsCollection, {
+        author: currentUser?.email,
+        category: data.category,
+        level: data.level,
+        answer: data.answerCorrect,
+        options: [answer, answerTwo, answerThree, answerFour],
+      });
+      //resetting the inputs
+      setAnswer("");
+      setAnswerTwo("");
+      setAnswerThree("");
+      setAnswerFour("");
+      setQuestion("");
+    } catch (err) {
+      enqueueSnackbar("Sth went wrong. Please try again later", {
+        variant: "error",
+      });
+      console.log("error:", err)
+    }
   };
 
   return (
