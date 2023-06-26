@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./trueFalse.style.css";
 import FormControl from "@mui/material/FormControl";
 import { useTheme } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
@@ -12,16 +11,9 @@ import Typography from "@mui/material/Typography";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import { TextareaAutosize } from "@mui/material";
 import { db } from "../../firebase-config";
-import {
-  collection,
-  doc,
-  getDocs,
-  addDoc,
-  deleteDoc,
-} from "firebase/firestore/lite";
+import { collection, addDoc } from "firebase/firestore/lite";
 
 function TrueFalse() {
-  const theme = useTheme();
   const [text, setText] = useState("");
   const [typeValue, setTypeValue] = useState("css");
   const [levelValue, setLevelValue] = useState("easy");

@@ -1,7 +1,6 @@
 import "./fourChoices.style.css";
 import React, { useState } from "react";
 import FormControl from "@mui/material/FormControl";
-import { useTheme } from "@mui/material/styles";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,7 +11,6 @@ import Typography from "@mui/material/Typography";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 
 function FourChoices() {
-  const theme = useTheme();
   const [question, setQuestion] = useState("");
   const [typeValue, setTypeValue] = useState("css");
   const [levelValue, setLevelValue] = useState("easy");

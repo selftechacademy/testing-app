@@ -11,7 +11,7 @@ import "../fieldDropdown/fieldDropdown.style.css";
 
 export default function Quizes() {
   const [value, setValue] = React.useState("");
-  const [error, setError] = React.useState(false);
+  const [error] = React.useState(false);
   const [helperText, setHelperText] = React.useState("Choose an aswer");
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -19,7 +19,7 @@ export default function Quizes() {
 
   // destructuring
   const { question, choices, correctAnswer, index } = questions[activeQuestion];
-  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [selectedAnswer] = useState("");
 
   const handleRadioChange = (event) => {
     setValue(event.target.value);
