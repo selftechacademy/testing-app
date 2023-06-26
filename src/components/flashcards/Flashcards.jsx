@@ -1,48 +1,117 @@
 import { flashcards } from "../../flashcards";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-flip";
 import { EffectFlip } from "swiper";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth-context";
+import { db } from "../../firebase-config";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  setDoc,
+} from "firebase/firestore/lite";
 import "./flashcards.style.css";
+import { enqueueSnackbar } from "notistack";
 
 // category checkbox style
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
 
 // checkbox categories
 const categories = ["React", "Js", "Html", "Css", "General"];
 
 // flash cards functions
 const FlashCards = () => {
-  const [category, setCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [randomIndex, setRandomIndex] = useState(0);
   const [countCards, setCountCards] = useState(0);
   const [score, setScore] = useState(0);
   const [numberOfCards, setNumberOfCards] = useState("");
   const [startFlashCards, setStartFlashCards] = useState(false);
+  const [dbFlashCards, setDbFlashcards] = useState([]);
+  const [selectedFlashCards, setSelectedFlashCards] = useState([]);
+
+  const { currentUser } = useContext(AuthContext);
 
   // go to initial slide
   const swiperRef = useRef(null);
 
+  const getRandomFlashCards = () => {
+    const flashCardsList = [];
+    const randomNumList = [];
+    //getting the random index numbers first
+    do {
+      for (let i = 0; i < numberOfCards; i++) {
+        let randomNum = Math.floor(Math.random() * dbFlashCards.length);
+        if (!randomNumList.includes(randomNum)) {
+          randomNumList.push(randomNum);
+        }
+        if (randomNumList.length === numberOfCards) {
+          break;
+        }
+      }
+    } while (randomNumList.length !== numberOfCards);
+
+    //picking up questions
+    randomNumList.forEach((num) => {
+      flashCardsList.push(dbFlashCards[num]);
+    });
+
+    //setting the selected cards
+    setSelectedFlashCards([...flashCardsList]);
+  };
+
+  const getAllFlashcards = async (category) => {
+    try {
+      const q1 = query(
+        collection(db, "flashcards"),
+        where("category", "==", category.toLowerCase())
+      );
+      const querySnapshot = await getDocs(q1);
+      const allFlashCards = [];
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        allFlashCards.push(doc.data());
+      });
+      setDbFlashcards([...allFlashCards]);
+    } catch (err) {
+      enqueueSnackbar("sth went wrong", { variant: "erro" });
+      console.log("error", err);
+    }
+  };
+
+  useEffect(() => {
+    if (numberOfCards) {
+      getRandomFlashCards();
+    }
+  }, [startFlashCards]);
+
   const handleSlideTo = (slide) => {
     swiperRef.current.swiper.slideTo(slide);
+  };
+
+  const endGame = async () => {
+    // if user exists
+    // const todoRef = doc(db, "users", currentUser.email);
+    // await setDoc(todoRef, { isCompleted: true }, { merge: true });
   };
 
   // click I know the answer
@@ -51,6 +120,9 @@ const FlashCards = () => {
     setCountCards(countCards + 1);
     onClickNextCard();
     handleSlideTo(0);
+    if (countCards === numberOfCards - 1) {
+      console.log("game is ended");
+    }
   };
 
   // click I didnt know the answer
@@ -62,28 +134,13 @@ const FlashCards = () => {
 
   // draw next card
   const onClickNextCard = () => {
-    // filter by categories
-    const categoryFilter = flashcards.filter((el) => {
-      return category
-        .map((el) => el.toLowerCase())
-        .includes(el.category.toLowerCase());
-    });
-
-    if (categoryFilter.length === 0) {
-      console.log("No flashcards found for the selected categories.");
-      return;
-    }
-
-    // random index of next card
-    const randomIndex = Math.floor(Math.random() * categoryFilter.length);
-    const randomCardIndex = categoryFilter[randomIndex].id - 1;
     setCountCards(countCards + 1);
-    setRandomIndex(randomCardIndex);
   };
 
   // category selection
   const handleChangeCategory = (e) => {
-    setCategory(e.target.value);
+    setSelectedCategory(e.target.value);
+    getAllFlashcards(e.target.value);
   };
 
   // number of cards selection
@@ -116,13 +173,16 @@ const FlashCards = () => {
 
   // set the cards to start
   const onClickStart = () => {
+    console.log("flashcard", selectedFlashCards);
+    console.log("count", countCards);
+    console.log("db flashcard", dbFlashCards);
     setStartFlashCards(true);
   };
 
   // play again
   const onClickRestart = () => {
     setStartFlashCards(false);
-    setCategory([]);
+    setSelectedCategory("");
     setCountCards(0);
     setScore(0);
     setNumberOfCards("");
@@ -162,33 +222,35 @@ const FlashCards = () => {
       <div className="flash-cards__app">
         <h2>Flash Cards</h2>
         <div className="flash-cards__categories__checkbox">
-          <FormControl sx={{ m: 1, width: 350 }}>
-            <InputLabel id="flash-cards__categories__checkbox">
-              Category
-            </InputLabel>
-            <Select
-              labelId="flash-cards__categories__checkbox"
-              id="categories-multiple-checkbox"
-              multiple
-              value={category}
-              onChange={handleChangeCategory}
-              input={<OutlinedInput label="Category" />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              {categories.map((el) => (
-                <MenuItem key={el} value={el}>
-                  <Checkbox checked={category.includes(el)} />
-                  <ListItemText primary={el} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <div>
+            <FormControl sx={{ m: 1, minWidth: 350 }}>
+              <InputLabel id="demo-simple-select-autowidth-label">
+                Categories
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={selectedCategory}
+                onChange={handleChangeCategory}
+                label="Number of cards"
+              >
+                {categories.map((el) => {
+                  return (
+                    <MenuItem key={el} value={el}>
+                      {el}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </div>
           <SelectNumberOfCards />
         </div>
         {countCards >= numberOfCards && countCards > 0 ? (
           end()
-        ) : category.length > 0 && numberOfCards > 0 && startFlashCards ? (
+        ) : selectedCategory.length > 0 &&
+          numberOfCards > 0 &&
+          startFlashCards ? (
           <Swiper
             effect={"flip"}
             grabCursor={true}
@@ -198,15 +260,15 @@ const FlashCards = () => {
             ref={swiperRef}
             roundLengths={true}
           >
-            <div key={randomIndex}>
+            <div key={countCards}>
               <SwiperSlide onClick={() => handleSlideTo(1)}>
                 <p className="flash-cards__question">
-                  {flashcards[randomIndex].question}
+                  {selectedFlashCards[countCards]?.question}
                 </p>
               </SwiperSlide>
               <SwiperSlide onClick={() => handleSlideTo(0)}>
                 <p className="flash-cards__answer">
-                  {flashcards[randomIndex].answer}
+                  {selectedFlashCards[countCards]?.answer}
                 </p>
               </SwiperSlide>
             </div>
