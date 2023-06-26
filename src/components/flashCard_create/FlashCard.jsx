@@ -19,6 +19,7 @@ function FlashCard() {
   const [typeValue, setTypeValue] = useState("css");
   const [levelValue, setLevelValue] = useState("easy");
   const [answer, setAnswer] = useState("");
+  const [code, setCode] = useState("");
 
   const { currentUser } = useContext(AuthContext);
 
@@ -37,6 +38,10 @@ function FlashCard() {
     setAnswer(e.target.value);
   };
 
+  const handleCode = (e) => {
+    setCode(e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -50,6 +55,7 @@ function FlashCard() {
       //resetting the inputs
       setAnswer("");
       setQuestion("");
+      setCode("");
     } catch (err) {
       enqueueSnackbar("Sth went wrong. Please try again later", {
         variant: "error",
@@ -152,6 +158,20 @@ function FlashCard() {
             name="answer"
             minRows={5}
             placeholder="Input Answer"
+          />
+          <Typography variant="h6" gutterBottom>
+            Code:
+          </Typography>
+          <TextareaAutosize
+            sx={{ marginTop: "2rem" }}
+            id="outlined-basic"
+            label="Input Code"
+            variant="outlined"
+            onChange={handleCode}
+            value={code}
+            name="code"
+            minRows={5}
+            placeholder="Input Code"
           />
           <Button
             type="submit"
