@@ -1,4 +1,3 @@
-import { flashcards } from "../../flashcards";
 import React, { useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -9,17 +8,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import { useContext } from "react";
-import { AuthContext } from "../../context/auth-context";
+// import { useContext } from "react";
+// import { AuthContext } from "../../context/auth-context";
 import { db } from "../../firebase-config";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  where,
-  setDoc,
-} from "firebase/firestore/lite";
+import { collection, getDocs, query, where } from "firebase/firestore/lite";
 import "./flashcards.style.css";
 import { enqueueSnackbar } from "notistack";
 
@@ -41,7 +33,6 @@ const categories = ["React", "Js", "Html", "Css", "General"];
 // flash cards functions
 const FlashCards = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [randomIndex, setRandomIndex] = useState(0);
   const [countCards, setCountCards] = useState(0);
   const [score, setScore] = useState(0);
   const [numberOfCards, setNumberOfCards] = useState("");
@@ -49,7 +40,7 @@ const FlashCards = () => {
   const [dbFlashCards, setDbFlashcards] = useState([]);
   const [selectedFlashCards, setSelectedFlashCards] = useState([]);
 
-  const { currentUser } = useContext(AuthContext);
+  // const { currentUser } = useContext(AuthContext);
 
   // go to initial slide
   const swiperRef = useRef(null);
@@ -102,17 +93,18 @@ const FlashCards = () => {
     if (numberOfCards) {
       getRandomFlashCards();
     }
+    // eslint-disable-next-line
   }, [startFlashCards]);
 
   const handleSlideTo = (slide) => {
     swiperRef.current.swiper.slideTo(slide);
   };
 
-  const endGame = async () => {
-    // if user exists
-    // const todoRef = doc(db, "users", currentUser.email);
-    // await setDoc(todoRef, { isCompleted: true }, { merge: true });
-  };
+  // const endGame = async () => {
+  //   // if user exists
+  //   // const todoRef = doc(db, "users", currentUser.email);
+  //   // await setDoc(todoRef, { isCompleted: true }, { merge: true });
+  // };
 
   // click I know the answer
   const onClickIknow = () => {
@@ -221,75 +213,39 @@ const FlashCards = () => {
     <>
       <div className="flash-cards__app">
         <h2>Flash Cards</h2>
-        <div className="flash-cards__categories__checkbox">
-          <div>
-            <FormControl sx={{ m: 1, minWidth: 350 }}>
-              <InputLabel id="demo-simple-select-autowidth-label">
-                Categories
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={selectedCategory}
-                onChange={handleChangeCategory}
-                label="Number of cards"
-              >
-                {categories.map((el) => {
-                  return (
-                    <MenuItem key={el} value={el}>
-                      {el}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+        {!startFlashCards && (
+          <div className="flash-cards__categories__checkbox">
+            <div>
+              <FormControl sx={{ m: 1, minWidth: 350 }}>
+                <InputLabel id="demo-simple-select-autowidth-label">
+                  Categories
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-autowidth-label"
+                  id="demo-simple-select-autowidth"
+                  value={selectedCategory}
+                  onChange={handleChangeCategory}
+                  label="Number of cards"
+                >
+                  {categories.map((el) => {
+                    return (
+                      <MenuItem key={el} value={el}>
+                        {el}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </div>
+            <SelectNumberOfCards />
           </div>
-          <SelectNumberOfCards />
-        </div>
+        )}
         {countCards >= numberOfCards && countCards > 0 ? (
           end()
         ) : selectedCategory.length > 0 &&
           numberOfCards > 0 &&
           startFlashCards ? (
-          <Swiper
-            effect={"flip"}
-            grabCursor={true}
-            modules={[EffectFlip]}
-            className="mySwiper"
-            initialSlide={0}
-            ref={swiperRef}
-            roundLengths={true}
-          >
-            <div key={countCards}>
-              <SwiperSlide onClick={() => handleSlideTo(1)}>
-                <p className="flash-cards__question">
-                  {selectedFlashCards[countCards]?.question}
-                </p>
-              </SwiperSlide>
-              <SwiperSlide onClick={() => handleSlideTo(0)}>
-                <p className="flash-cards__answer">
-                  {selectedFlashCards[countCards]?.answer}
-                </p>
-              </SwiperSlide>
-            </div>
-            <div className="flesh-cards__btns">
-              <Button
-                variant="contained"
-                className="flash-cards__inotknow-btn"
-                color="error"
-                onClick={onClickIdontknow}
-              >
-                I don't know it
-              </Button>
-              <Button
-                variant="contained"
-                className="flash-cards__iknow-btn"
-                color="success"
-                onClick={onClickIknow}
-              >
-                I know it
-              </Button>
-            </div>
+          <>
             <div className="flash-cards__score">
               <p className="flash-cards__correctAnsw" id="correctAnsw">
                 Correct answers {score} out of {countCards}
@@ -299,7 +255,47 @@ const FlashCards = () => {
                 {countCards ? ((score / countCards) * 100).toFixed(2) : 0}%
               </p>
             </div>
-          </Swiper>
+            <Swiper
+              effect={"flip"}
+              grabCursor={true}
+              modules={[EffectFlip]}
+              className="mySwiper"
+              initialSlide={0}
+              ref={swiperRef}
+              roundLengths={true}
+            >
+              <div key={countCards}>
+                <SwiperSlide onClick={() => handleSlideTo(1)}>
+                  <p className="flash-cards__question">
+                    {selectedFlashCards[countCards]?.question}
+                  </p>
+                </SwiperSlide>
+                <SwiperSlide onClick={() => handleSlideTo(0)}>
+                  <p className="flash-cards__answer">
+                    {selectedFlashCards[countCards]?.answer}
+                  </p>
+                </SwiperSlide>
+              </div>
+              <div className="flesh-cards__btns">
+                <Button
+                  variant="contained"
+                  className="flash-cards__inotknow-btn"
+                  color="error"
+                  onClick={onClickIdontknow}
+                >
+                  I don't know it
+                </Button>
+                <Button
+                  variant="contained"
+                  className="flash-cards__iknow-btn"
+                  color="success"
+                  onClick={onClickIknow}
+                >
+                  I know it
+                </Button>
+              </div>
+            </Swiper>
+          </>
         ) : (
           start()
         )}
