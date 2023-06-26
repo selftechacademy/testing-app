@@ -19,6 +19,7 @@ function App() {
     if (currentUser) {
       navigate("/");
     }
+    // eslint-disable-next-line
   }, [currentUser]);
 
   return (
