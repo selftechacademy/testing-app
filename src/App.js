@@ -4,7 +4,6 @@ import { AuthContext } from "./context/auth-context";
 import RequireAuth from "./components/require-auth/RequireAuth";
 import SignUp from "./pages/signup/SignUp";
 import SignIn from "./pages/signin/SignIn";
-import TodoApp from "./pages/todoApp/TodoApp";
 import Dashboard from "./pages/dashboard/Dashboard";
 import TestPage from "./pages/testPage/TestPage";
 import FlashCards from "./components/flashcards/Flashcards";

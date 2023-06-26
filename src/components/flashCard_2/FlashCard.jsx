@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import FormControl from "@mui/material/FormControl";
-import { useTheme } from "@mui/material/styles";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,7 +11,6 @@ import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import "./flashCard.style.css";
 
 function FlashCard() {
-  const theme = useTheme();
   const [question, setQuestion] = useState("");
   const [typeValue, setTypeValue] = useState("css");
   const [levelValue, setLevelValue] = useState("easy");
