@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./trueFalse.style.css";
 import FormControl from "@mui/material/FormControl";
-import { useTheme } from "@mui/material/styles";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
