@@ -69,22 +69,23 @@ export default function Quizes() {
               name="quiz"
               value={value}
               onChange={handleRadioChange}
-              sx={{ color: "white" }}
             >
               {choices.map((item, index) => (
                 <FormControlLabel
+                  className="js-quiz__answers"
                   value={item}
                   key={index}
                   control={<Radio />}
                   label={item}
+                  sx={{ fontSize: "20px" }}
                 />
               ))}
             </RadioGroup>
-            <FormHelperText sx={{ color: "white" }}>
+            <FormHelperText sx={{ color: "black" }}>
               {helperText}
             </FormHelperText>
             <Button
-              sx={{ mt: 1, width: "700px" }}
+              sx={{ mt: 1, width: "60%", margin: "0 auto" }}
               color="secondary"
               type="submit"
               variant="contained"
@@ -92,7 +93,7 @@ export default function Quizes() {
               Check Answer
             </Button>
             <Button
-              sx={{ width: "700px", mt: "15px" }}
+              sx={{ width: "60%", margin: "0 auto", mt: "15px" }}
               variant="contained"
               value={selectedAnswer}
               onClick={onClickNext}
