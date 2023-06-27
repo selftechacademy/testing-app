@@ -17,3 +17,8 @@ code {
   padding: 0;
   box-sizing: border-box;
 }
+
+p,
+ul {
+  font-size: 14px;
+}
