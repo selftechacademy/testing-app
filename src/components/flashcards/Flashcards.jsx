@@ -271,9 +271,19 @@ const FlashCards = () => {
                   </p>
                 </SwiperSlide>
                 <SwiperSlide onClick={() => handleSlideTo(0)}>
-                  <p className="flash-cards__answer">
-                    {selectedFlashCards[countCards]?.answer}
-                  </p>
+                  <div className="flash-cards__answer">
+                    <div>
+                      {/* <p>{selectedFlashCards[countCards]?.answer}</p> */}
+                      <div
+                        className="line-numbers language-jsx"
+                        dangerouslySetInnerHTML={{
+                          __html: selectedFlashCards[countCards]?.answer,
+                        }}
+                      ></div>
+                      {/* <div></div> */}
+                      {/* <Markup content={selectedFlashCards[countCards]?.code} /> */}
+                    </div>
+                  </div>
                 </SwiperSlide>
               </div>
               <div className="flesh-cards__btns">

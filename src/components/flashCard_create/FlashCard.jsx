@@ -86,6 +86,11 @@ function FlashCard() {
                 name="category"
                 row
               >
+                <FormControlLabel
+                  value="html"
+                  control={<Radio />}
+                  label="HTML"
+                />
                 <FormControlLabel value="css" control={<Radio />} label="CSS" />
                 <FormControlLabel value="js" control={<Radio />} label="JS" />
 
@@ -95,9 +100,9 @@ function FlashCard() {
                   label="REACT"
                 />
                 <FormControlLabel
-                  value="cs"
+                  value="general"
                   control={<Radio />}
-                  label="CS RELATED"
+                  label="General"
                 />
               </RadioGroup>
             </FormControl>
