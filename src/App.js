@@ -9,6 +9,7 @@ import TestPage from "./pages/testPage/TestPage";
 import FlashCards from "./components/flashcards/Flashcards";
 import FieldDropDown from "./components/fieldDropdown/FieldDropdown";
 import QuestionsMain from "./components/questionsMain/QuestionsMain";
+import PersonalReports from "./components/personalReports/PersonalReports";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -63,6 +64,14 @@ function App() {
           element={
             <RequireAuth>
               <QuestionsMain />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="personalReport"
+          element={
+            <RequireAuth>
+              <PersonalReports />
             </RequireAuth>
           }
         />

@@ -15,46 +15,47 @@ import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <Link to="todoapp" style={{ textDecoration: "none" }}>
+    <Link to="/" style={{ textDecoration: "none" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
         <ListItemText primary="Dashboard" />
-      </Link>
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <PlayCircleOutlineIcon />
-      </ListItemIcon>
-      <Link to="quiz" style={{ textDecoration: "none" }}>
-        <ListItemText primary="Take exam" />
-      </Link>
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <StyleIcon />
-      </ListItemIcon>
-      <Link to="flashcards" style={{ textDecoration: "none" }}>
+      </ListItemButton>
+    </Link>
+
+    <Link to="flashcards" style={{ textDecoration: "none" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <StyleIcon />
+        </ListItemIcon>
         <ListItemText primary="Flashcards" />
-      </Link>
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <Link to="flashcards" style={{ textDecoration: "none" }}>
+      </ListItemButton>
+    </Link>
+    <Link to="quiz" style={{ textDecoration: "none" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <PlayCircleOutlineIcon />
+        </ListItemIcon>
+        <ListItemText primary="Take exam" />
+      </ListItemButton>
+    </Link>
+    <Link to="personalReport" style={{ textDecoration: "none" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <BarChartIcon />
+        </ListItemIcon>
         <ListItemText primary="Personal Report" />
-      </Link>
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <EmojiEventsIcon />
-      </ListItemIcon>
-      <Link to="flashcards" style={{ textDecoration: "none" }}>
+      </ListItemButton>
+    </Link>
+    <Link to="flashcards" style={{ textDecoration: "none" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <EmojiEventsIcon />
+        </ListItemIcon>
         <ListItemText primary="Standings" />
-      </Link>
-    </ListItemButton>
+      </ListItemButton>
+    </Link>
   </React.Fragment>
 );
 
@@ -63,14 +64,14 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Admin
     </ListSubheader>
-    <ListItemButton>
-      <ListItemIcon>
-        <AddBoxIcon />
-      </ListItemIcon>
-      <Link to="createquestions" style={{ textDecoration: "none" }}>
+    <Link to="createquestions" style={{ textDecoration: "none" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <AddBoxIcon />
+        </ListItemIcon>
         <ListItemText primary="Create Questions" />
-      </Link>
-    </ListItemButton>
+      </ListItemButton>
+    </Link>
     <ListItemButton>
       <ListItemIcon>
         <DesignServicesIcon />

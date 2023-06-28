@@ -8,10 +8,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-// import { useContext } from "react";
-// import { AuthContext } from "../../context/auth-context";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth-context";
 import { db } from "../../firebase-config";
-import { collection, getDocs, query, where } from "firebase/firestore/lite";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore/lite";
 import "./flashcards.style.css";
 import { enqueueSnackbar } from "notistack";
 
@@ -39,8 +47,9 @@ const FlashCards = () => {
   const [startFlashCards, setStartFlashCards] = useState(false);
   const [dbFlashCards, setDbFlashcards] = useState([]);
   const [selectedFlashCards, setSelectedFlashCards] = useState([]);
+  const [userResults, setUserResults] = useState(null);
 
-  // const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   // go to initial slide
   const swiperRef = useRef(null);
@@ -70,6 +79,17 @@ const FlashCards = () => {
     setSelectedFlashCards([...flashCardsList]);
   };
 
+  useEffect(() => {
+    if (numberOfCards) {
+      getRandomFlashCards();
+    }
+    // eslint-disable-next-line
+  }, [startFlashCards]);
+
+  const handleSlideTo = (slide) => {
+    swiperRef.current.swiper.slideTo(slide);
+  };
+
   const getAllFlashcards = async (category) => {
     try {
       const q1 = query(
@@ -89,22 +109,39 @@ const FlashCards = () => {
     }
   };
 
-  useEffect(() => {
-    if (numberOfCards) {
-      getRandomFlashCards();
+  const getUserResults = async () => {
+    try {
+      const q1 = query(
+        collection(db, "users"),
+        where("email", "==", currentUser.email.toLowerCase())
+      );
+      const querySnapshot = await getDocs(q1);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        setUserResults({ ...doc.data(), id: doc.id });
+      });
+    } catch (err) {
+      console.log("error:", err);
     }
-    // eslint-disable-next-line
-  }, [startFlashCards]);
-
-  const handleSlideTo = (slide) => {
-    swiperRef.current.swiper.slideTo(slide);
   };
 
-  // const endGame = async () => {
-  //   // if user exists
-  //   // const todoRef = doc(db, "users", currentUser.email);
-  //   // await setDoc(todoRef, { isCompleted: true }, { merge: true });
-  // };
+  //register user scores
+
+  const calcScore = async () => {
+    try {
+      const userRef = doc(db, "users", userResults.id);
+      // Atomically add a new region to the "regions" array field.
+      await updateDoc(userRef, {
+        [selectedCategory]: arrayUnion({
+          score: score,
+          numberOfCards: numberOfCards,
+          time: new Date(),
+        }),
+      });
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
 
   // click I know the answer
   const onClickIknow = () => {
@@ -113,7 +150,7 @@ const FlashCards = () => {
     onClickNextCard();
     handleSlideTo(0);
     if (countCards === numberOfCards - 1) {
-      console.log("game is ended");
+      calcScore();
     }
   };
 
@@ -122,6 +159,9 @@ const FlashCards = () => {
     setCountCards(countCards + 1);
     onClickNextCard();
     handleSlideTo(0);
+    if (countCards === numberOfCards - 1) {
+      calcScore();
+    }
   };
 
   // draw next card
@@ -133,6 +173,7 @@ const FlashCards = () => {
   const handleChangeCategory = (e) => {
     setSelectedCategory(e.target.value);
     getAllFlashcards(e.target.value);
+    getUserResults();
   };
 
   // number of cards selection
@@ -154,9 +195,9 @@ const FlashCards = () => {
             onChange={handleChangeNrCards}
             label="Number of cards"
           >
+            <MenuItem value={5}>Five (5)</MenuItem>
             <MenuItem value={10}>Ten (10)</MenuItem>
             <MenuItem value={20}>Twenty (20)</MenuItem>
-            <MenuItem value={30}>Thirty (30)</MenuItem>
           </Select>
         </FormControl>
       </div>
@@ -165,9 +206,6 @@ const FlashCards = () => {
 
   // set the cards to start
   const onClickStart = () => {
-    console.log("flashcard", selectedFlashCards);
-    console.log("count", countCards);
-    console.log("db flashcard", dbFlashCards);
     setStartFlashCards(true);
   };
 
